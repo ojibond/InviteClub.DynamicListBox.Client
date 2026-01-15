@@ -9,19 +9,23 @@ namespace InvitedClub.DynamicListBox.Client.Pages
         private DynamicListBox<int>? _listBox;
         private List<ListBoxOption<int>> _dbItems = new();
         private int _selectedId;
-        private int _selectedMarkupId;
+        private IReadOnlyList<int> _selectedMarkupIds = Array.Empty<int>();
         private string _newText = "";
 
-        private string SelectedMarkupLabel => _selectedMarkupId switch
+        private string SelectedMarkupLabel => _selectedMarkupIds.Count == 0
+            ? "(none)"
+            : string.Join(", ", _selectedMarkupIds.Select(GetMarkupLabel));
+
+        private static string GetMarkupLabel(int value) => value switch
         {
             1 => "Markup Item A",
             2 => "Markup Item B",
-            _ => "(none)"
+            _ => value.ToString()
         };
 
         private void ClearMarkupSelection()
         {
-            _selectedMarkupId = 0;
+            _selectedMarkupIds = Array.Empty<int>();
         }
 
         protected override async Task OnInitializedAsync() => await ReloadAsync();

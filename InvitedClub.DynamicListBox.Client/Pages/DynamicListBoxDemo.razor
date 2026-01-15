@@ -20,13 +20,14 @@
 <hr />
 
 <!-- ChildContent demo -->
-    <p class="dlb-intro">Declarative items (ChildContent). Click to select.</p>
+    <p class="dlb-intro">Declarative items (ChildContent). Click to toggle selections.</p>
 
 <DynamicListBox TValue="int"
                 Width="340px"
                 Height="120px"
                 Items="Array.Empty<ListBoxOption<int>>()"
-                @bind-SelectedValue="_selectedMarkupId"
+                AllowMultiple="true"
+                @bind-SelectedValues="_selectedMarkupIds"
                 StopClickPropagation="true">
 
     <DynamicListBoxItemComponent TValue="int" Value="1" Text="Markup Item A" />
@@ -34,6 +35,6 @@
 
 </DynamicListBox>
 
-<p class="hint">Selected markup item: @SelectedMarkupLabel</p>
+<p class="hint">Selected markup items: @SelectedMarkupLabel</p>
 </div>
 
