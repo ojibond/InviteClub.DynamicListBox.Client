@@ -3,20 +3,36 @@
 @using InvitedClub.DynamicListBox.Shared
 @inject HttpClient Http
 
-<DynamicListBoxComponent TValue="int"
-                         @ref="_listBox"
-                         Items="_dbItems"
-                         @bind-SelectedValue="_selectedId"
-                         Width="340px"
-                         Height="240px">
+<DynamicListBox TValue="int"
+                @ref="_listBox"
+                Items="_dbItems"
+                @bind-SelectedValue="_selectedId"
+                Width="340px"
+                Height="240px" />
 
-    <DynamicListBoxItemComponent TValue="int" Value="-1" Text="(Static) Alpha" />
-    <DynamicListBoxItemComponent TValue="int" Value="-2" Text="(Static) Beta" />
-</DynamicListBoxComponent>
-
-<input @bind="_newText" placeholder="New item text" />
+ <input @bind="_newText" placeholder="New item text" />
 <button @onclick="AddAsync">Add</button>
-<button @onclick="RemoveAsync">Remove Selected</button>
+<button @onclick="RemoveAsync" disabled="@(_selectedId <= 0)">
+    Remove Selected
+</button>
+<hr />
 
+<!-- ChildContent demo -->
+<h4>ChildContent Example</h4>
+<p class="hint">
+    Demonstrates declarative list items defined via Razor markup.
+</p>
 
+<DynamicListBox TValue="int"
+                Width="340px"
+                Height="120px"
+                Items="Array.Empty<ListBoxOption<int>>()"
+                @bind-SelectedValue="_selectedMarkupId">
+
+    <DynamicListBoxItemComponent TValue="int" Value="1" Text="Markup Item A" />
+    <DynamicListBoxItemComponent TValue="int" Value="2" Text="Markup Item B" />
+
+</DynamicListBox>
+
+<p class="hint">Selected markup item: @SelectedMarkupLabel</p>
 

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace InvitedClub.DynamicListBox.Client.Components
 {
-    public partial class DynamicListBoxComponent<TValue> : ComponentBase
+    public partial class DynamicListBox<TValue> : ComponentBase
     {
         [Parameter] public RenderFragment? ChildContent { get; set; }
 

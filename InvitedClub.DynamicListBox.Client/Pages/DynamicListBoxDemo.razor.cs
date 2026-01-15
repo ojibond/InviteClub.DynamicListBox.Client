@@ -6,10 +6,18 @@ namespace InvitedClub.DynamicListBox.Client.Pages
 {
     public partial class DynamicListBoxDemo
     {
-        private DynamicListBoxComponent<int>? _listBox;
+        private DynamicListBox<int>? _listBox;
         private List<ListBoxOption<int>> _dbItems = new();
         private int _selectedId;
+        private int _selectedMarkupId;
         private string _newText = "";
+
+        private string SelectedMarkupLabel => _selectedMarkupId switch
+        {
+            1 => "Markup Item A",
+            2 => "Markup Item B",
+            _ => "(none)"
+        };
 
         protected override async Task OnInitializedAsync() => await ReloadAsync();
 

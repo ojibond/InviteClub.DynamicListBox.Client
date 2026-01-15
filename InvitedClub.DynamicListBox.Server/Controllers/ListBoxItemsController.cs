@@ -46,7 +46,7 @@ public class ListBoxItemsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = entity.Id }, dto);
     }
 
-    [HttpDelete("id:int")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteListBox(int id)
     {
         var entity = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
