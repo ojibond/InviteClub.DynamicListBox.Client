@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="InviteClub.DynamicListBox.Client/InvitedClub.DynamicListBox.Client.csproj" />
-  <Project Path="InviteClub.DynamicListBox.Server/InvitedClub.DynamicListBox.Server.csproj" />
-  <Project Path="InviteClub.DynamicListBox.Shared/InvitedClub.DynamicListBox.Shared.csproj" />
+  <Project Path="InvitedClub.DynamicListBox.Client/InvitedClub.DynamicListBox.Client.csproj" />
+  <Project Path="InvitedClub.DynamicListBox.Server/InvitedClub.DynamicListBox.Server.csproj" />
+  <Project Path="InvitedClub.DynamicListBox.Shared/InvitedClub.DynamicListBox.Shared.csproj" />
 </Solution>

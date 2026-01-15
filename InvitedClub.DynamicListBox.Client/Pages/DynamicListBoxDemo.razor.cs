@@ -15,7 +15,7 @@ namespace InvitedClub.DynamicListBox.Client.Pages
 
         private async Task ReloadAsync()
         {
-            var rows = await Http.GetFromJsonAsync<List<ListBoxItemDto>>("api/listbox-items") ?? new();
+            var rows = await Http.GetFromJsonAsync<List<ListBoxItemDto>>("api/ListboxItems") ?? new();
             _dbItems = rows.OrderBy(x => x.SortOrder)
                           .Select(x => new ListBoxOption<int>(x.Id, x.Text))
                           .ToList();
@@ -26,7 +26,7 @@ namespace InvitedClub.DynamicListBox.Client.Pages
             var text = _newText.Trim();
             if (string.IsNullOrWhiteSpace(text)) return;
 
-            await Http.PostAsJsonAsync("api/listbox-items", new CreateListBoxItemRequest(text));
+            await Http.PostAsJsonAsync("api/ListboxItems", new CreateListBoxItemRequest(text));
             _newText = "";
             await ReloadAsync();
         }
@@ -40,7 +40,7 @@ namespace InvitedClub.DynamicListBox.Client.Pages
                 await _listBox.ShowRemoveVisualAsync();
 
             // only delete DB-backed items      
-            await Http.DeleteAsync($"api/listbox-items/{_selectedId}");
+            await Http.DeleteAsync($"api/ListboxItems/{_selectedId}");
             await ReloadAsync();
 
             // reset selection

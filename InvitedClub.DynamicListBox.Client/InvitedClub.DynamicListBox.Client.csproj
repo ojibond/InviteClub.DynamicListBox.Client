@@ -11,11 +11,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.22" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\InviteClub.DynamicListBox.Shared\InvitedClub.DynamicListBox.Shared.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\InvitedClub.DynamicListBox.Shared\InvitedClub.DynamicListBox.Shared.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
     <Folder Include="Layout\" />
     <Folder Include="wwwroot\sample-data\" />
   </ItemGroup>
