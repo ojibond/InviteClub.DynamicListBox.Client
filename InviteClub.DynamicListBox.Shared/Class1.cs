@@ -1,4 +1,4 @@
-﻿namespace InviteClub.DynamicListBox.Shared
+﻿namespace InvitedClub.DynamicListBox.Shared
 {
     public class Class1
     {

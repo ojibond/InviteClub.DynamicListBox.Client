@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InviteClub.DynamicListBox.Shared\InviteClub.DynamicListBox.Shared.csproj" />
+    <ProjectReference Include="..\InviteClub.DynamicListBox.Shared\InvitedClub.DynamicListBox.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

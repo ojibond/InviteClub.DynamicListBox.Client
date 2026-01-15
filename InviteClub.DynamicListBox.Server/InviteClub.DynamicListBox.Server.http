@@ -1,6 +1,6 @@
-@InviteClub.DynamicListBox.Server_HostAddress = http://localhost:5292
+@InvitedClub.DynamicListBox.Server_HostAddress = http://localhost:5292
 
-GET {{InviteClub.DynamicListBox.Server_HostAddress}}/weatherforecast/
+GET {{InvitedClub.DynamicListBox.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
