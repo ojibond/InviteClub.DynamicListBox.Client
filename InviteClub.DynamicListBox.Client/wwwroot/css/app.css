@@ -101,3 +101,40 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+.dlb-container {
+    border: 1px solid #cfcfcf;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.dlb-scroll {
+    height: 100%;
+    overflow-y: auto; /* requirement: vertical scroll bar when needed */
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.dlb-item {
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 4px;
+}
+
+    .dlb-item:hover {
+        background: #f3f3f3;
+    }
+
+.dlb-selected {
+    background: #d9e8ff;
+    border: 1px solid #8bb8ff;
+}
+
+/* requirement: selected item turns blue for 1 second before removal */
+.dlb-pending {
+    background: #2f6bff;
+    color: white;
+}
+

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Layout\" />
+    <Folder Include="wwwroot\sample-data\" />
   </ItemGroup>
 
 </Project>
