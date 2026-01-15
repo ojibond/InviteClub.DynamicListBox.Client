@@ -4,6 +4,7 @@
 @inject HttpClient Http
 
 <div @onclick="ClearMarkupSelection">
+<p class="dlb-intro">Add or remove activities from the list below.</p>
 <DynamicListBox TValue="int"
                 @ref="_listBox"
                 Items="_dbItems"
@@ -19,10 +20,7 @@
 <hr />
 
 <!-- ChildContent demo -->
-<h4>ChildContent Example</h4>
-<p class="hint">
-    Demonstrates declarative list items defined via Razor markup.
-</p>
+    <p class="dlb-intro">Declarative items (ChildContent). Click to select.</p>
 
 <DynamicListBox TValue="int"
                 Width="340px"
