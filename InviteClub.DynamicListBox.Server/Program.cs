@@ -1,3 +1,6 @@
+using InvitedClub.DynamicListBox.Server.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,9 +16,12 @@ builder.Services.AddCors(options =>
         policy
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyOrigin() // OK for local dev
+            .AllowAnyOrigin() 
     );
 });
+
+builder.Services.AddDbContext<ListBoxDbContext>(opt =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("ListBoxDb")));
 
 var app = builder.Build();
 
@@ -35,6 +41,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
-//7256
