@@ -1,5 +1,13 @@
+:root {
+    --page-bg: radial-gradient(1200px 800px at 15% -10%, #fff8ec 0%, #f4f7fb 45%, #eef2f6 100%);
+    --content-bg: #ffffff;
+    --text-color: #1f2937;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--page-bg);
+    color: var(--text-color);
 }
 
 h1:focus {
@@ -106,6 +114,7 @@ code {
     border: 1px solid #cfcfcf;
     border-radius: 6px;
     box-sizing: border-box;
+    background: var(--content-bg);
 }
 
 .dlb-scroll {

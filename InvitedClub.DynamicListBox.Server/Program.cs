@@ -25,18 +25,18 @@ builder.Services.AddDbContext<ListBoxDbContext>(opt =>
 
 var app = builder.Build();
 
-// Ensure the database is created, migrations are applied, and initial list box items are seeded for local development
+//Ensure the database is created, migrations are applied, and initial list box items are seeded for local development
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ListBoxDbContext>();
     db.Database.Migrate();
 
-    if(!db.Items.Any())
+    if (!db.Items.Any())
     {
         db.Items.AddRange(
-            new ListBoxItemEntity { Text = "DB Item 1", SortOrder = 1 },
-            new ListBoxItemEntity { Text = "DB Item 2", SortOrder = 2 },
-            new ListBoxItemEntity { Text = "DB Item 3", SortOrder = 3 }
+            new ListBoxItemEntity { Text = "Golf", SortOrder = 1 },
+            new ListBoxItemEntity { Text = "Tennisb", SortOrder = 2 },
+            new ListBoxItemEntity { Text = "Pickleball", SortOrder = 3 }
             );
         db.SaveChanges();
     }

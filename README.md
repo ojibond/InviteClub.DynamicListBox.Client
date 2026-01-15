@@ -1,11 +1,11 @@
-# DynamicListBox Explanation
+﻿# DynamicListBox Explanation
 
-DynamicListBox keeps two sources of items: database items passed in via Items and markup-defined items registered by DynamicListBoxItem. On each render, the component merges them into _combinedItems. Child components register once through a cascading parent reference, so declarative items are discovered without JS.
+Here’s the approach I took: the list combines two sources of items - DB items passed in via `Items`, and declarative items defined in Razor via `DynamicListBoxItemComponent`. Child items register with the parent on render, so you can use pure markup when you don’t want to data‑bind.
 
-Selection is handled via SelectedValue/SelectedValueChanged, so the parent page owns state and can react to changes. Clicking an item updates SelectedValue and the list uses CSS classes to highlight the selected item.
+Selection uses the standard Blazor pattern (`SelectedValue` / `SelectedValueChanged`). Clicking an item updates the bound value and applies a visual highlight.
 
-Removal feedback is triggered by the page calling ShowRemoveVisualAsync before deleting. The component marks the selected item as pending, re-renders, waits one second, then clears the pending state so the page can remove it from the data source.
+For removal, the page first calls `ShowRemoveVisualAsync`, which marks the selected item as “pending,” waits one second, then clears that state so the item can be removed from the data source.
 
-UI stays in sync because Items is reloaded from the API after add/remove and OnParametersSet recomputes the combined list on every render.
+The UI stays in sync because the page reloads `Items` after add/remove and the component recomputes the combined list every render.
 
-Sizing is applied with Width and Height parameters, set inline on the container. The inner scroll region uses overflow-y:auto so vertical scrollbars appear when content exceeds the configured height.
+Sizing is driven by the `Width` and `Height` parameters, and the inner container uses `overflow-y: auto` to show a vertical scrollbar when needed.
