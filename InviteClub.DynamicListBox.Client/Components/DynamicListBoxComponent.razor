@@ -1,0 +1,18 @@
+﻿<h3>DynamicListBox</h3>
+
+@typeparam TValue
+
+<div class="dlb-container" style="@($"width:{Width};height:{Height};")">
+    <div class="dlb-scroll">
+        @foreach (var item in _combinedItems)
+        {
+            <div class="@GetItemClass(item)" @onclick="() => SelectAsync(item.Value)">
+                @item.Text
+            </div>
+        }
+
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
