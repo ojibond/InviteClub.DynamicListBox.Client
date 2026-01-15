@@ -14,4 +14,8 @@
     <ProjectReference Include="..\InviteClub.DynamicListBox.Shared\InviteClub.DynamicListBox.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
