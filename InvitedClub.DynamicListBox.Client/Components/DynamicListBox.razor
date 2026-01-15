@@ -2,7 +2,7 @@
 
 @typeparam TValue
 
-<div class="dlb-container" style="@($"width:{Width};height:{Height};")">
+<div class="dlb-container" style="@($"width:{Width};height:{Height};")" @onclick:stopPropagation="StopClickPropagation">
     <div class="dlb-scroll">
         @foreach (var item in _combinedItems)
         {

@@ -3,6 +3,7 @@
 @using InvitedClub.DynamicListBox.Shared
 @inject HttpClient Http
 
+<div @onclick="ClearMarkupSelection">
 <DynamicListBox TValue="int"
                 @ref="_listBox"
                 Items="_dbItems"
@@ -27,7 +28,8 @@
                 Width="340px"
                 Height="120px"
                 Items="Array.Empty<ListBoxOption<int>>()"
-                @bind-SelectedValue="_selectedMarkupId">
+                @bind-SelectedValue="_selectedMarkupId"
+                StopClickPropagation="true">
 
     <DynamicListBoxItemComponent TValue="int" Value="1" Text="Markup Item A" />
     <DynamicListBoxItemComponent TValue="int" Value="2" Text="Markup Item B" />
@@ -35,4 +37,5 @@
 </DynamicListBox>
 
 <p class="hint">Selected markup item: @SelectedMarkupLabel</p>
+</div>
 

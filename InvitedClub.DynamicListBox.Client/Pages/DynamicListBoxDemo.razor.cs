@@ -19,6 +19,11 @@ namespace InvitedClub.DynamicListBox.Client.Pages
             _ => "(none)"
         };
 
+        private void ClearMarkupSelection()
+        {
+            _selectedMarkupId = 0;
+        }
+
         protected override async Task OnInitializedAsync() => await ReloadAsync();
 
         private async Task ReloadAsync()
@@ -43,16 +48,23 @@ namespace InvitedClub.DynamicListBox.Client.Pages
         {
             if (_selectedId <= 0) return;
 
-            // 1-second blue visual 
+            // 1-second blue visual
             if (_listBox is not null)
                 await _listBox.ShowRemoveVisualAsync();
+            else
+                await Task.Delay(1000);
 
-            // only delete DB-backed items      
-            await Http.DeleteAsync($"api/ListboxItems/{_selectedId}");
-            await ReloadAsync();
+            var removedId = _selectedId;
+
+            // remove from UI after the delay, independent of API latency
+            _dbItems = _dbItems.Where(x => x.Value != removedId).ToList();
 
             // reset selection
             _selectedId = 0;
+
+            // only delete DB-backed items
+            await Http.DeleteAsync($"api/ListboxItems/{removedId}");
+            await ReloadAsync();
         }
     }
 }

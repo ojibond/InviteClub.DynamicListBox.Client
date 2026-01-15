@@ -16,6 +16,7 @@ namespace InvitedClub.DynamicListBox.Client.Components
         // Configurable sizing
         [Parameter] public string Width { get; set; } = "320px";
         [Parameter] public string Height { get; set; } = "240px";
+        [Parameter] public bool StopClickPropagation { get; set; }
 
         // ChildContent items (markup-defined) register into this list
         private readonly List<ListBoxOption<TValue>> _childItems = new();
