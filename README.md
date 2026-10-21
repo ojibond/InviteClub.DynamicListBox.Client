@@ -1,4 +1,4 @@
-# DynamicListBox Explanation
+# DynamicListBox: Reusable Blazor List Component
 
 
 
@@ -9,7 +9,7 @@ The UI stays in sync because the page reloads 'Items' after add/remove and the c
 Sizing is driven by the 'Width' and 'Height' parameters, and the inner container uses 'overflow-y: auto' to show a vertical scrollbar when needed.
 
 
-Short explanation and follow-up answers:
+Design Notes:
 
 1. Items/state: the component merges DB-backed Items with child markup items registered on render; selection is tracked via SelectedValue (single) or SelectedValues with AllowMultiple (multi).
 2. Visual feedback/timing: ShowRemoveVisualAsync sets a pending flag, re-renders, waits 1 second, then clears the flag; the page removes the item after the delay.
