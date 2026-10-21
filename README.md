@@ -1,5 +1,6 @@
 # DynamicListBox: Reusable Blazor List Component
 
+**Stack:** Blazor WebAssembly (hosted), ASP.NET Core Web API, EF Core, SQL Server
 
 
 Here’s the approach I took: the list combines two sources of items - DB items passed in via 'Items', and declarative items defined in Razor via 'DynamicListBoxItemComponent'. Child items register with the parent on render, so you can use pure markup when you don’t want to data‑bind.
