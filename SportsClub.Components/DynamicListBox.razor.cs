@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace SportsClub.Client.Components
+namespace SportsClub.Components
 {
     public partial class DynamicListBox<TValue> : ComponentBase
     {

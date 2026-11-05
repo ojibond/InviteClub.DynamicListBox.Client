@@ -11,12 +11,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.22" PrivateAssets="all" />
   </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\SportsClub.Shared\SportsClub.Shared.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SportsClub.Shared\SportsClub.Shared.csproj" />
+    <ProjectReference Include="..\SportsClub.Components\SportsClub.Components.csproj" />
+  </ItemGroup>
 
-
-	<ItemGroup>
+  <ItemGroup>
     <Folder Include="Layout\" />
     <Folder Include="wwwroot\sample-data\" />
   </ItemGroup>

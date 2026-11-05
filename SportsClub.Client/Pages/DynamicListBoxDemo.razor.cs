@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using SportsClub.Client.Components;
+using SportsClub.Components;
 using SportsClub.Shared;
 
 namespace SportsClub.Client.Pages
