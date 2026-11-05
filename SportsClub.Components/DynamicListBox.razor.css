@@ -1,0 +1,48 @@
+.dlb-container {
+    border: 1px solid #cfcfcf;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background: var(--content-bg, #ffffff);
+}
+
+.dlb-scroll {
+    height: 100%;
+    overflow-y: auto; /* vertical scroll bar when needed */
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.dlb-item {
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 4px;
+}
+
+    .dlb-item:hover {
+        background: #f3f3f3;
+    }
+
+.dlb-selected {
+    background: #d9e8ff;
+    border: 1px solid #8bb8ff;
+}
+
+/* selected item turns blue briefly before removal */
+.dlb-pending {
+    background: #2f6bff;
+    color: white;
+}
+
+/* keyboard focus ring on the listbox */
+.dlb-scroll:focus,
+.dlb-scroll:focus-visible {
+    outline: 2px solid #258cfb;
+    outline-offset: -2px;
+}
+
+/* the keyboard-active option (ARIA active descendant) */
+.dlb-active {
+    box-shadow: inset 0 0 0 2px #258cfb;
+}

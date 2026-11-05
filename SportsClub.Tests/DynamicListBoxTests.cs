@@ -1,0 +1,102 @@
+using Bunit;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using SportsClub.Components;
+using Xunit;
+
+namespace SportsClub.Tests;
+
+public class DynamicListBoxTests : TestContext
+{
+    private static ListBoxOption<int>[] SampleItems() => new[]
+    {
+        new ListBoxOption<int>(1, "Golf"),
+        new ListBoxOption<int>(2, "Tennis"),
+        new ListBoxOption<int>(3, "Pickleball"),
+    };
+
+    [Fact]
+    public void Renders_items_as_options_inside_a_listbox()
+    {
+        var cut = RenderComponent<DynamicListBox<int>>(p => p
+            .Add(x => x.Items, SampleItems()));
+
+        Assert.NotNull(cut.Find("[role=listbox]"));
+
+        var options = cut.FindAll("[role=option]");
+        Assert.Equal(3, options.Count);
+        Assert.Equal("Golf", options[0].TextContent.Trim());
+    }
+
+    [Fact]
+    public void Clicking_an_item_raises_SelectedValueChanged()
+    {
+        int? selected = null;
+        var cut = RenderComponent<DynamicListBox<int>>(p => p
+            .Add(x => x.Items, SampleItems())
+            .Add(x => x.SelectedValueChanged,
+                 EventCallback.Factory.Create<int?>(this, v => selected = v)));
+
+        cut.FindAll("[role=option]")[1].Click();
+
+        Assert.Equal(2, selected);
+    }
+
+    [Fact]
+    public void Selected_item_reports_aria_selected_true()
+    {
+        var cut = RenderComponent<DynamicListBox<int>>(p => p
+            .Add(x => x.Items, SampleItems())
+            .Add(x => x.SelectedValue, 2));
+
+        var options = cut.FindAll("[role=option]");
+        Assert.Equal("false", options[0].GetAttribute("aria-selected"));
+        Assert.Equal("true", options[1].GetAttribute("aria-selected"));
+    }
+
+    [Fact]
+    public void Multiple_selection_adds_clicked_value()
+    {
+        IReadOnlyList<int> current = Array.Empty<int>();
+        var cut = RenderComponent<DynamicListBox<int>>(p => p
+            .Add(x => x.Items, SampleItems())
+            .Add(x => x.AllowMultiple, true)
+            .Add(x => x.SelectedValues, current)
+            .Add(x => x.SelectedValuesChanged,
+                 EventCallback.Factory.Create<IReadOnlyList<int>>(this, v => current = v)));
+
+        cut.FindAll("[role=option]")[0].Click();
+
+        Assert.Equal(new[] { 1 }, current);
+    }
+
+    [Fact]
+    public void Keyboard_ArrowDown_then_Enter_selects_item()
+    {
+        int? selected = null;
+        var cut = RenderComponent<DynamicListBox<int>>(p => p
+            .Add(x => x.Items, SampleItems())
+            .Add(x => x.SelectedValueChanged,
+                 EventCallback.Factory.Create<int?>(this, v => selected = v)));
+
+        var listbox = cut.Find("[role=listbox]");
+        listbox.Focus();                                           // active index -> 0 (Golf)
+        listbox.KeyDown(new KeyboardEventArgs { Key = "ArrowDown" }); // -> 1 (Tennis)
+        listbox.KeyDown(new KeyboardEventArgs { Key = "Enter" });     // selects Tennis
+
+        Assert.Equal(2, selected);
+    }
+
+    [Fact]
+    public void Declarative_child_items_are_rendered_as_options()
+    {
+        var cut = RenderComponent<DynamicListBox<int>>(p => p
+            .Add(x => x.Items, Array.Empty<ListBoxOption<int>>())
+            .AddChildContent<DynamicListBoxItemComponent<int>>(cp => cp
+                .Add(c => c.Value, 10)
+                .Add(c => c.Text, "Markup A")));
+
+        var options = cut.FindAll("[role=option]");
+        Assert.Contains(options, o => o.TextContent.Trim() == "Markup A");
+    }
+}

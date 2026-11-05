@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SportsClub.Client/SportsClub.Client.csproj" />
+  <Project Path="SportsClub.Server/SportsClub.Server.csproj" />
+  <Project Path="SportsClub.Shared/SportsClub.Shared.csproj" />
+  <Project Path="SportsClub.Components/SportsClub.Components.csproj" />
+  <Project Path="SportsClub.Tests/SportsClub.Tests.csproj" />
+</Solution>
