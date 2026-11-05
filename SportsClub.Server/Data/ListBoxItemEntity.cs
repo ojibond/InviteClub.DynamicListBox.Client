@@ -1,4 +1,4 @@
-﻿namespace InvitedClub.DynamicListBox.Server.Data;
+﻿namespace SportsClub.Server.Data;
 
 public class ListBoxItemEntity
 {

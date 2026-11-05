@@ -1,4 +1,4 @@
-using InvitedClub.DynamicListBox.Server.Data;
+using SportsClub.Server.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +35,7 @@ using (var scope = app.Services.CreateScope())
     {
         db.Items.AddRange(
             new ListBoxItemEntity { Text = "Golf", SortOrder = 1 },
-            new ListBoxItemEntity { Text = "Tennisb", SortOrder = 2 },
+            new ListBoxItemEntity { Text = "Tennis", SortOrder = 2 },
             new ListBoxItemEntity { Text = "Pickleball", SortOrder = 3 },
             new ListBoxItemEntity { Text = "Swimming", SortOrder = 4 },
             new ListBoxItemEntity { Text = "Yoga & Pilates", SortOrder = 5 },

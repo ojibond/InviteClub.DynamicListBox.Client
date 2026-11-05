@@ -12,7 +12,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\InvitedClub.DynamicListBox.Shared\InvitedClub.DynamicListBox.Shared.csproj" />
+		<ProjectReference Include="..\SportsClub.Shared\SportsClub.Shared.csproj" />
 	</ItemGroup>
 
 

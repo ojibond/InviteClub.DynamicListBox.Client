@@ -1,8 +1,8 @@
 using System.Net.Http.Json;
-using InvitedClub.DynamicListBox.Client.Components;
-using InvitedClub.DynamicListBox.Shared;
+using SportsClub.Client.Components;
+using SportsClub.Shared;
 
-namespace InvitedClub.DynamicListBox.Client.Pages
+namespace SportsClub.Client.Pages
 {
     public partial class DynamicListBoxDemo
     {

@@ -1,9 +1,9 @@
-﻿using InvitedClub.DynamicListBox.Server.Data;
-using InvitedClub.DynamicListBox.Shared;
+﻿using SportsClub.Server.Data;
+using SportsClub.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace InvitedClub.DynamicListBox.Server.Controllers;
+namespace SportsClub.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

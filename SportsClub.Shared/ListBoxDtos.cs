@@ -1,4 +1,4 @@
-﻿namespace InvitedClub.DynamicListBox.Shared;
+﻿namespace SportsClub.Shared;
 
 public record ListBoxItemDto(int Id, string Text, int SortOrder);
 

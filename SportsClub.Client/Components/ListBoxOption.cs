@@ -1,4 +1,4 @@
-﻿namespace InvitedClub.DynamicListBox.Client.Components;
+﻿namespace SportsClub.Client.Components;
 
 public record ListBoxOption<TValue>(TValue Value, string Text);
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace InvitedClub.DynamicListBox.Server.Data;
+namespace SportsClub.Server.Data;
 
 public class ListBoxDbContext : DbContext
 {

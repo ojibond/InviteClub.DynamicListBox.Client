@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace InvitedClub.DynamicListBox.Server.Migrations
+namespace SportsClub.Server.Migrations
 {
     /// <inheritdoc />
     public partial class InitialListBoxItems : Migration

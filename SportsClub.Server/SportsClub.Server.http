@@ -1,0 +1,16 @@
+@HostAddress = http://localhost:5292
+
+### Get all list box items
+GET {{HostAddress}}/api/ListBoxItems
+Accept: application/json
+
+### Add a list box item
+POST {{HostAddress}}/api/ListBoxItems
+Content-Type: application/json
+
+{
+  "text": "New Activity"
+}
+
+### Delete a list box item by id
+DELETE {{HostAddress}}/api/ListBoxItems/1
