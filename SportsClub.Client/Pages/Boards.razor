@@ -1,0 +1,57 @@
+@page "/"
+@inject HttpClient Http
+
+<h1 class="boards-title">SportsClub — Activity Boards</h1>
+
+@if (_message is not null)
+{
+    <div class="boards-message" role="alert">@_message</div>
+}
+
+<div class="boards-layout">
+    <div class="boards-sidebar">
+        <h2>Boards</h2>
+        <ul class="board-list">
+            @foreach (var b in _boards)
+            {
+                <li class="@(b.Id == SelectedBoardId ? "board-item selected" : "board-item")">
+                    <button class="board-select" @onclick="() => SelectBoardAsync(b.Id)">
+                        @b.Name <span class="count">@b.ItemCount</span>
+                    </button>
+                    <button class="board-delete" title="Delete board" @onclick="() => DeleteBoardAsync(b.Id)">&times;</button>
+                </li>
+            }
+        </ul>
+        <div class="new-board">
+            <input @bind="_newBoardName" placeholder="New board name" />
+            <button @onclick="AddBoardAsync">Add</button>
+        </div>
+    </div>
+
+    <div class="board-detail">
+        @if (_selectedBoard is null)
+        {
+            <p>Select or create a board to manage its activities.</p>
+        }
+        else
+        {
+            <div class="board-rename">
+                <input @bind="_boardNameEdit" aria-label="Board name" />
+                <button @onclick="RenameBoardAsync">Rename</button>
+            </div>
+
+            <DynamicListBox TValue="int"
+                            @ref="_listBox"
+                            Items="_items"
+                            @bind-SelectedValue="_selectedItemId"
+                            Width="340px"
+                            Height="260px" />
+
+            <div class="item-actions">
+                <input @bind="_newItemText" placeholder="New activity" />
+                <button @onclick="AddItemAsync">Add</button>
+                <button @onclick="RemoveItemAsync" disabled="@(_selectedItemId <= 0)">Remove selected</button>
+            </div>
+        }
+    </div>
+</div>

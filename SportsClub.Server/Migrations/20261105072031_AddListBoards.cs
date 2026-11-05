@@ -1,0 +1,96 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace SportsClub.Server.Migrations
+{
+    /// <inheritdoc />
+    public partial class AddListBoards : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropIndex(
+                name: "IX_Items_SortOrder",
+                table: "Items");
+
+            migrationBuilder.AddColumn<int>(
+                name: "ListBoardId",
+                table: "Items",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<byte[]>(
+                name: "RowVersion",
+                table: "Items",
+                type: "rowversion",
+                rowVersion: true,
+                nullable: false,
+                defaultValue: new byte[0]);
+
+            migrationBuilder.CreateTable(
+                name: "Boards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Boards", x => x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_ListBoardId_SortOrder",
+                table: "Items",
+                columns: new[] { "ListBoardId", "SortOrder" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Boards_Name",
+                table: "Boards",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Items_Boards_ListBoardId",
+                table: "Items",
+                column: "ListBoardId",
+                principalTable: "Boards",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Items_Boards_ListBoardId",
+                table: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Boards");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Items_ListBoardId_SortOrder",
+                table: "Items");
+
+            migrationBuilder.DropColumn(
+                name: "ListBoardId",
+                table: "Items");
+
+            migrationBuilder.DropColumn(
+                name: "RowVersion",
+                table: "Items");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_SortOrder",
+                table: "Items",
+                column: "SortOrder");
+        }
+    }
+}

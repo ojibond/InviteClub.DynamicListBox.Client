@@ -1,4 +1,5 @@
 using SportsClub.Server.Data;
+using SportsClub.Server;
 using SportsClub.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,25 +31,52 @@ builder.Services.AddDbContext<ListBoxDbContext>(opt =>
 
 // Application services
 builder.Services.AddScoped<IListBoxItemService, ListBoxItemService>();
+builder.Services.AddScoped<IListBoardService, ListBoardService>();
+
+// Global error handling -> RFC-7807 ProblemDetails
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 
-//Ensure the database is created, migrations are applied, and initial list box items are seeded for local development
+//Ensure the database is created, migrations are applied, and sample boards + items are seeded for local development
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ListBoxDbContext>();
     db.Database.Migrate();
 
-    if (!db.Items.Any())
+    if (!db.Boards.Any())
     {
-        db.Items.AddRange(
-            new ListBoxItemEntity { Text = "Golf", SortOrder = 1 },
-            new ListBoxItemEntity { Text = "Tennis", SortOrder = 2 },
-            new ListBoxItemEntity { Text = "Pickleball", SortOrder = 3 },
-            new ListBoxItemEntity { Text = "Swimming", SortOrder = 4 },
-            new ListBoxItemEntity { Text = "Yoga & Pilates", SortOrder = 5 },
-            new ListBoxItemEntity { Text = "Fitness Center", SortOrder = 6 }
-            );
+        db.Boards.AddRange(
+            new ListBoardEntity
+            {
+                Name = "Racquet Sports",
+                Items =
+                {
+                    new ListBoxItemEntity { Text = "Tennis", SortOrder = 1 },
+                    new ListBoxItemEntity { Text = "Pickleball", SortOrder = 2 },
+                    new ListBoxItemEntity { Text = "Squash", SortOrder = 3 }
+                }
+            },
+            new ListBoardEntity
+            {
+                Name = "Aquatics",
+                Items =
+                {
+                    new ListBoxItemEntity { Text = "Lap Swimming", SortOrder = 1 },
+                    new ListBoxItemEntity { Text = "Water Aerobics", SortOrder = 2 }
+                }
+            },
+            new ListBoardEntity
+            {
+                Name = "Fitness & Wellness",
+                Items =
+                {
+                    new ListBoxItemEntity { Text = "Yoga & Pilates", SortOrder = 1 },
+                    new ListBoxItemEntity { Text = "Fitness Center", SortOrder = 2 },
+                    new ListBoxItemEntity { Text = "Spin Studio", SortOrder = 3 }
+                }
+            });
         db.SaveChanges();
     }
 }
@@ -59,6 +87,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

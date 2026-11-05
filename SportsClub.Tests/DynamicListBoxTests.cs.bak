@@ -1,5 +1,4 @@
 using Bunit;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using SportsClub.Components;
 using Xunit;
@@ -34,8 +33,7 @@ public class DynamicListBoxTests : TestContext
         int? selected = null;
         var cut = RenderComponent<DynamicListBox<int>>(p => p
             .Add(x => x.Items, SampleItems())
-            .Add(x => x.SelectedValueChanged,
-                 EventCallback.Factory.Create<int?>(this, v => selected = v)));
+            .Add<int?>(x => x.SelectedValueChanged, (int? v) => { selected = v; }));
 
         cut.FindAll("[role=option]")[1].Click();
 
@@ -62,8 +60,7 @@ public class DynamicListBoxTests : TestContext
             .Add(x => x.Items, SampleItems())
             .Add(x => x.AllowMultiple, true)
             .Add(x => x.SelectedValues, current)
-            .Add(x => x.SelectedValuesChanged,
-                 EventCallback.Factory.Create<IReadOnlyList<int>>(this, v => current = v)));
+            .Add<IReadOnlyList<int>>(x => x.SelectedValuesChanged, (IReadOnlyList<int> v) => { current = v; }));
 
         cut.FindAll("[role=option]")[0].Click();
 
@@ -76,13 +73,12 @@ public class DynamicListBoxTests : TestContext
         int? selected = null;
         var cut = RenderComponent<DynamicListBox<int>>(p => p
             .Add(x => x.Items, SampleItems())
-            .Add(x => x.SelectedValueChanged,
-                 EventCallback.Factory.Create<int?>(this, v => selected = v)));
+            .Add<int?>(x => x.SelectedValueChanged, (int? v) => { selected = v; }));
 
         var listbox = cut.Find("[role=listbox]");
-        listbox.Focus();                                           // active index -> 0 (Golf)
-        listbox.KeyDown(new KeyboardEventArgs { Key = "ArrowDown" }); // -> 1 (Tennis)
-        listbox.KeyDown(new KeyboardEventArgs { Key = "Enter" });     // selects Tennis
+        listbox.Focus();
+        listbox.KeyDown(new KeyboardEventArgs { Key = "ArrowDown" });
+        listbox.KeyDown(new KeyboardEventArgs { Key = "Enter" });
 
         Assert.Equal(2, selected);
     }
