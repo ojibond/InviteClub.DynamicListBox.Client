@@ -1,40 +1,17 @@
-﻿@page "/"
-@using SportsClub.Components
-@using SportsClub.Shared
-@inject HttpClient Http
+@page "/component-demo"
 
-<div @onclick="ClearMarkupSelection">
-<p class="dlb-intro">Add or remove activities from the list below.</p>
-<DynamicListBox TValue="int"
-                @ref="_listBox"
-                Items="_dbItems"
-                @bind-SelectedValue="_selectedId"
-                Width="340px"
-                Height="240px" />
-
- <input @bind="_newText" placeholder="New item text" />
-<button @onclick="AddAsync">Add</button>
-<button @onclick="RemoveAsync" disabled="@(_selectedId <= 0)">
-    Remove Selected
-</button>
-<hr />
-
-<!-- ChildContent demo -->
-    <p class="dlb-intro">Declarative items (ChildContent). Click to toggle selections.</p>
+<h1>DynamicListBox — Component Demo</h1>
+<p class="dlb-intro">Declarative items via <code>ChildContent</code>. Click to toggle (multi-select).</p>
 
 <DynamicListBox TValue="int"
                 Width="340px"
-                Height="120px"
+                Height="160px"
                 Items="Array.Empty<ListBoxOption<int>>()"
                 AllowMultiple="true"
-                @bind-SelectedValues="_selectedMarkupIds"
-                StopClickPropagation="true">
-
+                @bind-SelectedValues="_selectedMarkupIds">
     <DynamicListBoxItemComponent TValue="int" Value="1" Text="Markup Item A" />
     <DynamicListBoxItemComponent TValue="int" Value="2" Text="Markup Item B" />
-
+    <DynamicListBoxItemComponent TValue="int" Value="3" Text="Markup Item C" />
 </DynamicListBox>
 
-<p class="hint">Selected markup items: @SelectedMarkupLabel</p>
-</div>
-
+<p class="hint">Selected: @SelectedMarkupLabel</p>
