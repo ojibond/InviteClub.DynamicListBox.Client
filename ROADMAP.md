@@ -1,7 +1,7 @@
 # Roadmap
 
 SportsClub is an evolving reference for clean, testable .NET patterns. This is the
-work planned next — a mix of features, infrastructure, and polish. Items are rough
+work planned next - a mix of features, infrastructure, and polish. Items are rough
 priority order; checked boxes are done.
 
 ## Features
@@ -26,7 +26,7 @@ priority order; checked boxes are done.
 
 ## Quality & infrastructure
 
-- [ ] **CI via GitHub Actions** — `dotnet build` + `dotnet test` on push and PR.
+- [ ] **CI via GitHub Actions** - `dotnet build` + `dotnet test` on push and PR.
 - [ ] **Branch protection** requiring green CI before merging to `master`
   (once CI exists).
 - [ ] **Integration-test the concurrency path** against a real SQL Server
@@ -41,5 +41,5 @@ priority order; checked boxes are done.
 - [x] Service layer, request validation, and a global RFC-7807 `ProblemDetails`
   error handler.
 - [x] Security/config hardening (scoped CORS, config-driven API URL, user-secrets).
-- [x] **Named activity boards** — one-to-many domain with optimistic concurrency.
+- [x] **Named activity boards** - one-to-many domain with optimistic concurrency.
 - [x] Service + `WebApplicationFactory` integration tests.
