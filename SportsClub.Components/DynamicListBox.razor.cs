@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace SportsClub.Components
 {
@@ -23,12 +24,20 @@ namespace SportsClub.Components
 
         // ChildContent items (markup-defined) register into this list
         private readonly List<ListBoxOption<TValue>> _childItems = new();
-
         private List<ListBoxOption<TValue>> _combinedItems = new();
 
         // removal visual state
         private bool _pendingRemoval;
         private HashSet<TValue>? _pendingRemovalValues;
+
+        // keyboard navigation (ARIA active-descendant pattern)
+        private readonly string _listboxId = "dlb-" + Guid.NewGuid().ToString("N")[..8];
+        private int _activeIndex = -1;
+
+        private string OptionId(int index) => $"{_listboxId}-opt-{index}";
+
+        private string? ActiveDescendantId =>
+            _activeIndex >= 0 && _activeIndex < _combinedItems.Count ? OptionId(_activeIndex) : null;
 
         protected override void OnParametersSet()
         {
@@ -45,6 +54,20 @@ namespace SportsClub.Components
             _childItems.Add(option);
             _combinedItems = Items.Concat(_childItems).ToList();
             StateHasChanged();
+        }
+
+        private bool IsSelected(ListBoxOption<TValue> item)
+        {
+            var comparer = EqualityComparer<TValue>.Default;
+            return AllowMultiple
+                ? SelectedValues.Any(selected => comparer.Equals(item.Value, selected))
+                : SelectedValue is not null && comparer.Equals(item.Value, SelectedValue);
+        }
+
+        private async Task OnOptionClickAsync(int index)
+        {
+            _activeIndex = index;
+            await SelectAsync(_combinedItems[index].Value);
         }
 
         private async Task SelectAsync(TValue value)
@@ -69,7 +92,44 @@ namespace SportsClub.Components
             await SelectedValueChanged.InvokeAsync(value);
         }
 
-        // Called by demo page before it deletes the selected record(s)
+        private void OnFocus()
+        {
+            // On focus, start keyboard navigation at the selected item, else the first.
+            if (_activeIndex < 0 && _combinedItems.Count > 0)
+            {
+                var selectedIndex = _combinedItems.FindIndex(IsSelected);
+                _activeIndex = selectedIndex >= 0 ? selectedIndex : 0;
+            }
+        }
+
+        private async Task OnKeyDownAsync(KeyboardEventArgs e)
+        {
+            if (_combinedItems.Count == 0) return;
+
+            switch (e.Key)
+            {
+                case "ArrowDown":
+                    _activeIndex = _activeIndex < 0 ? 0 : Math.Min(_activeIndex + 1, _combinedItems.Count - 1);
+                    break;
+                case "ArrowUp":
+                    _activeIndex = _activeIndex <= 0 ? 0 : _activeIndex - 1;
+                    break;
+                case "Home":
+                    _activeIndex = 0;
+                    break;
+                case "End":
+                    _activeIndex = _combinedItems.Count - 1;
+                    break;
+                case "Enter":
+                case " ":
+                case "Spacebar":
+                    if (_activeIndex >= 0 && _activeIndex < _combinedItems.Count)
+                        await SelectAsync(_combinedItems[_activeIndex].Value);
+                    break;
+            }
+        }
+
+        // Called by the page before it deletes the selected record(s)
         public async Task ShowRemoveVisualAsync()
         {
             if (AllowMultiple)
@@ -93,18 +153,16 @@ namespace SportsClub.Components
             StateHasChanged();
         }
 
-        private string GetItemClass(ListBoxOption<TValue> item)
+        private string GetItemClass(ListBoxOption<TValue> item, int index)
         {
-            var comparer = EqualityComparer<TValue>.Default;
-
-            var isSelected = AllowMultiple
-                ? SelectedValues.Any(selected => comparer.Equals(item.Value, selected))
-                : SelectedValue is not null && comparer.Equals(item.Value, SelectedValue);
             var isPending = _pendingRemoval && _pendingRemovalValues is not null && _pendingRemovalValues.Contains(item.Value);
 
-            if (isPending) return "dlb-item dlb-pending";
-            if (isSelected) return "dlb-item dlb-selected";
-            return "dlb-item";
+            var classes = new List<string> { "dlb-item" };
+            if (isPending) classes.Add("dlb-pending");
+            else if (IsSelected(item)) classes.Add("dlb-selected");
+            if (index == _activeIndex) classes.Add("dlb-active");
+
+            return string.Join(' ', classes);
         }
     }
 }

@@ -34,3 +34,15 @@
     background: #2f6bff;
     color: white;
 }
+
+/* keyboard focus ring on the listbox */
+.dlb-scroll:focus,
+.dlb-scroll:focus-visible {
+    outline: 2px solid #258cfb;
+    outline-offset: -2px;
+}
+
+/* the keyboard-active option (ARIA active descendant) */
+.dlb-active {
+    box-shadow: inset 0 0 0 2px #258cfb;
+}
