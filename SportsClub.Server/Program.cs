@@ -1,4 +1,5 @@
 using SportsClub.Server.Data;
+using SportsClub.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<ListBoxDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("ListBoxDb")));
+
+// Application services
+builder.Services.AddScoped<IListBoxItemService, ListBoxItemService>();
 
 var app = builder.Build();
 

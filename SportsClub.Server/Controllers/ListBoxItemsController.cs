@@ -1,7 +1,6 @@
-﻿using SportsClub.Server.Data;
-using SportsClub.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using SportsClub.Server.Services;
+using SportsClub.Shared;
 
 namespace SportsClub.Server.Controllers;
 
@@ -9,53 +8,40 @@ namespace SportsClub.Server.Controllers;
 [Route("api/[controller]")]
 public class ListBoxItemsController : ControllerBase
 {
-    private readonly ListBoxDbContext _dbContext;
-    public ListBoxItemsController(ListBoxDbContext dbContext) => _dbContext = dbContext;
+    private readonly IListBoxItemService _service;
+
+    public ListBoxItemsController(IListBoxItemService service) => _service = service;
 
     [HttpGet]
-    public async Task<ActionResult<List<ListBoxItemDto>>> Get()
-    {
-        var rows = await _dbContext.Items
-            .OrderBy(x => x.SortOrder)
-            .Select(x => new ListBoxItemDto(x.Id, x.Text, x.SortOrder))
-            .ToListAsync();
+    public async Task<ActionResult<PagedResult<ListBoxItemDto>>> Get(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 50,
+        CancellationToken ct = default)
+        => Ok(await _service.GetAsync(page, pageSize, ct));
 
-        return rows;
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ListBoxItemDto>> GetById(int id, CancellationToken ct = default)
+    {
+        var dto = await _service.GetByIdAsync(id, ct);
+        return dto is null ? NotFound() : Ok(dto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ListBoxItemDto>> Add([FromBody] CreateListBoxItemRequest request)
+    public async Task<ActionResult<ListBoxItemDto>> Add(
+        [FromBody] CreateListBoxItemRequest request,
+        CancellationToken ct = default)
     {
-        var text = (request.Text ?? "").Trim();
+        // [ApiController] already enforces the DTO's data annotations (400 on invalid).
+        // Extra guard: whitespace-only input passes [Required] but trims to empty.
+        var text = (request.Text ?? string.Empty).Trim();
         if (string.IsNullOrWhiteSpace(text))
             return BadRequest("Text is required.");
 
-        var maxSort = await _dbContext.Items.MaxAsync(x => (int?)x.SortOrder) ?? 0;
-
-        var entity = new ListBoxItemEntity
-        {
-            Text = text,
-            SortOrder = maxSort + 1
-        };
-
-        _dbContext.Items.Add(entity);
-        await _dbContext.SaveChangesAsync();
-
-        var dto = new ListBoxItemDto(entity.Id, entity.Text, entity.SortOrder);
-
-        return CreatedAtAction(nameof(Get), new { id = entity.Id }, dto);
+        var dto = await _service.AddAsync(text, ct);
+        return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
     }
 
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteListBox(int id)
-    {
-        var entity = await _dbContext.Items.FirstOrDefaultAsync(x => x.Id == id);
-
-        if (entity is null)
-            return NotFound();
-
-        _dbContext.Items.Remove(entity);
-        await _dbContext.SaveChangesAsync();
-        return NoContent();
-    }
+    public async Task<IActionResult> Delete(int id, CancellationToken ct = default)
+        => await _service.DeleteAsync(id, ct) ? NoContent() : NotFound();
 }

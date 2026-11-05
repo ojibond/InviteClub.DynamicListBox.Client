@@ -32,10 +32,13 @@ namespace SportsClub.Client.Pages
 
         private async Task ReloadAsync()
         {
-            var rows = await Http.GetFromJsonAsync<List<ListBoxItemDto>>("api/ListboxItems") ?? new();
-            _dbItems = rows.OrderBy(x => x.SortOrder)
-                          .Select(x => new ListBoxOption<int>(x.Id, x.Text))
-                          .ToList();
+            var result = await Http.GetFromJsonAsync<PagedResult<ListBoxItemDto>>(
+                "api/ListBoxItems?pageSize=200");
+
+            _dbItems = (result?.Items ?? Array.Empty<ListBoxItemDto>())
+                .OrderBy(x => x.SortOrder)
+                .Select(x => new ListBoxOption<int>(x.Id, x.Text))
+                .ToList();
         }
 
         private async Task AddAsync()
@@ -43,8 +46,12 @@ namespace SportsClub.Client.Pages
             var text = _newText.Trim();
             if (string.IsNullOrWhiteSpace(text)) return;
 
-            await Http.PostAsJsonAsync("api/ListboxItems", new CreateListBoxItemRequest(text));
-            _newText = "";
+            var response = await Http.PostAsJsonAsync(
+                "api/ListBoxItems", new CreateListBoxItemRequest(text));
+
+            if (response.IsSuccessStatusCode)
+                _newText = "";
+
             await ReloadAsync();
         }
 
@@ -52,23 +59,24 @@ namespace SportsClub.Client.Pages
         {
             if (_selectedId <= 0) return;
 
-            // 1-second blue visual
-            if (_listBox is not null)
-                await _listBox.ShowRemoveVisualAsync();
-            else
-                await Task.Delay(1000);
-
             var removedId = _selectedId;
 
-            // remove from UI after the delay, independent of API latency
-            _dbItems = _dbItems.Where(x => x.Value != removedId).ToList();
+            // Show the ~1-second pending highlight before deleting.
+            if (_listBox is not null)
+                await _listBox.ShowRemoveVisualAsync();
 
-            // reset selection
-            _selectedId = 0;
-
-            // only delete DB-backed items
-            await Http.DeleteAsync($"api/ListboxItems/{removedId}");
-            await ReloadAsync();
+            try
+            {
+                var response = await Http.DeleteAsync($"api/ListBoxItems/{removedId}");
+                if (response.IsSuccessStatusCode)
+                    _selectedId = 0;
+            }
+            finally
+            {
+                // Always resync with the server so the UI reflects the true state,
+                // whether the delete succeeded, failed, or the row was already gone.
+                await ReloadAsync();
+            }
         }
     }
 }
