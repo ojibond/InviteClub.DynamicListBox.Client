@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>sportsclub-server-d9f3c2a1-5b6e-4c7a-9f8d-2e1b3c4d5e6f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -61,3 +61,16 @@ vertical scrollbar when needed.
    API reads/writes.
 5. **Sizing/scrolling:** `Width`/`Height` parameters are applied to the container, and
    the inner scroll div uses `overflow-y: auto`.
+
+## Configuration
+
+Secrets and environment-specific settings are kept out of committed base config.
+
+**Server**
+- The database connection string lives in `appsettings.Development.json` for local dev. For other environments, supply it via user-secrets or an environment variable rather than committing it:
+  - `dotnet user-secrets set "ConnectionStrings:ListBoxDb" "<your-connection-string>"`
+  - or env var `ConnectionStrings__ListBoxDb`
+- Allowed CORS origins are read from `Cors:AllowedOrigins` (an array). The base `appsettings.json` ships empty — no cross-origin requests are allowed unless configured. Dev origins are set in `appsettings.Development.json`.
+
+**Client**
+- The API base URL is read from `wwwroot/appsettings.json` (`ApiBaseUrl`), so it can be changed per environment without code changes.

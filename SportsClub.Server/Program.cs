@@ -11,14 +11,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// CORS is restricted to the origins configured under "Cors:AllowedOrigins".
+// No origins are allowed unless they are configured (secure by default).
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? Array.Empty<string>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ClientCors", policy =>
         policy
+            .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowAnyOrigin() 
-    );
+            .AllowAnyMethod());
 });
 
 builder.Services.AddDbContext<ListBoxDbContext>(opt =>
@@ -60,7 +64,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("ClientCors");
 
-app.UseAuthorization();
+// NOTE: No authentication/authorization is configured for this reference app.
+// Add builder.Services.AddAuthentication()/AddAuthorization() and the matching
+// app.UseAuthentication()/UseAuthorization() middleware here when it is needed.
 
 app.MapControllers();
 
